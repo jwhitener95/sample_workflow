@@ -31,7 +31,7 @@ with tabs[0]:
     image = Image.open(f'dashboard_anaylysis/dashboard/static/{ds_id}/{plots_to_display[0][0]}')
     st.image(image, caption='Sunrise by the mountains')
 
-    im = cv2.imread(f'dashboard_anaylysis/dashboard/static/{ds_id}/{plots_to_display[0][0]}')
+    im = cv2.imread(f'dashboard_analysis/dashboard/static/{ds_id}/{plots_to_display[0][0]}')
     # im_resize = cv2.resize(im, (500, 500))
     is_success, im_buf_arr = cv2.imencode(".jpg", im)
     byte_im = im_buf_arr.tobytes()
