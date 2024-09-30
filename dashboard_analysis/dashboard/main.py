@@ -17,7 +17,6 @@ with tabs[0]:
     st.write('---')
 
     # Display processing plots
-    base_path = f'plots/{ds_id}/'
     plots_to_display = [('mito_plot1.png', 'Computed QC metrics'),
                         ('mito_plot2.png', 'Consider QC metrics jointly'),
                         ('variance_ratio.png', 'Contribution of single PCs to the total variance in the data'),
@@ -25,7 +24,7 @@ with tabs[0]:
                         ('leiden_plots.png', 'Leiden clusters at different resolutions')]
     for plot, cap in plots_to_display:
         st.write('**'+cap+'**')
-        st.image(base_path + plot)
+        st.markdown(f'<img src="app/static/{ds_id}/{plot}" style="width:100%">', unsafe_allow_html=True)
 
 
 # # Base file path
