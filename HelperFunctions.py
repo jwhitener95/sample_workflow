@@ -46,6 +46,32 @@ def qc_and_filter(adata, doublet_threshold=0.3, gene_threshold=200, cell_thresho
     # Plot
     sc.pl.violin(adata, ['nFeature_RNA', 'nCount_RNA', 'percent.mt'], jitter=0.4, multi_panel=True, show=False)
 
+    # Consider QC metrics jointly
+    sc.pl.scatter(adata, "nCount_RNA", "nFeature_RNA", color="percent.mt")
+
+    # Normalizing to median total counts
+    sc.pp.normalize_total(adata)
+
+    # Logarithmize the data
+    sc.pp.log1p(adata)
+
+    # Get most variable genes
+    sc.pp.highly_variable_genes(adata, n_top_genes=2000, batch_key="sample")
+
+    # PCA
+    sc.tl.pca(adata)
+    sc.pl.pca_variance_ratio(adata, n_pcs=50, log=True)
+
+    # Nearest neighbors and UMAP
+    sc.pp.neighbors(adata)
+    sc.tl.umap(adata)
+    sc.pl.umap(
+        adata,
+        color="sample",
+        # Setting a smaller point size to get prevent overlap
+        size=2,
+    )
+
     return(adata)
 
 def label_cells(adata):
@@ -87,38 +113,17 @@ def label_cells(adata):
         "pDC": ["GZMB", "IL3RA", "COBLL1", "TCF4"],
     }
 
-    # Normalizing to median total counts
-    sc.pp.normalize_total(adata)
-    # Logarithmize the data
-    sc.pp.log1p(adata)
-    # Get most variable genes
-    sc.pp.highly_variable_genes(adata, n_top_genes=2000, batch_key="sample")
-    # PCA
-    sc.tl.pca(adata)
-    sc.pl.pca_variance_ratio(adata, n_pcs=50, log=True)
-    # Nearest neighbors and UMAP
-    sc.pp.neighbors(adata)
-    sc.tl.umap(adata)
+    # Get leiden clusters
+    sc.tl.leiden(adata)
+    for res in [0.02, 0.5, 2.0]:
+            sc.tl.leiden(
+                adata, key_added=f"leiden_res_{res:4.2f}", resolution=res
+            )
     sc.pl.umap(
         adata,
-        color="sample",
-        # Setting a smaller point size to get prevent overlap
-        size=2,
+        color=["leiden_res_0.02", "leiden_res_0.50", "leiden_res_2.00"],
+        legend_loc="on data",
     )
-    # # Get leiden clusters
-    # sc.tl.leiden(adata, flavor="igraph", n_iterations=2)
-
-    # for res in [0.02, 0.5, 2.0]:
-    #     sc.tl.leiden(
-    #         adata, key_added=f"leiden_res_{res:4.2f}", resolution=res, flavor="igraph"
-    #     )
-
-    # sc.pl.umap(
-    #     adata,
-    #     color=["leiden_res_0.02", "leiden_res_0.50", "leiden_res_2.00"],
-    #     legend_loc="on data",
-    # )
-
     # sc.pl.dotplot(adata, marker_genes, groupby="leiden_res_0.02", standard_scale="var")
 
     return adata
