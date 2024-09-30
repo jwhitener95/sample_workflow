@@ -28,8 +28,8 @@ with tabs[0]:
         st.markdown(f'<img src="app/static/{ds_id}/{plot}" style="width:100%">', unsafe_allow_html=True)
 
     im = cv2.imread(f'static/{ds_id}/{plots_to_display[0][0]}')
-    im_resize = cv2.resize(im, (500, 500))
-    is_success, im_buf_arr = cv2.imencode(".jpg", im_resize)
+    # im_resize = cv2.resize(im, (500, 500))
+    is_success, im_buf_arr = cv2.imencode(".jpg", im)
     byte_im = im_buf_arr.tobytes()
     st.image(byte_im, caption=['Original Image'])
 
