@@ -1,9 +1,6 @@
 
 import streamlit as st
-import cv2
 from PIL import Image
-# import scanpy as sc
-# import matplotlib.pyplot as plt
 
 tabs = st.tabs(['Processing'])
 
@@ -26,16 +23,15 @@ with tabs[0]:
                         ('leiden_plots.png', 'Leiden clusters at different resolutions')]
     for plot, cap in plots_to_display:
         st.write('**'+cap+'**')
-        st.markdown(f'<img src="app/static/{ds_id}/{plot}" style="width:100%">', unsafe_allow_html=True)
+        # st.markdown(f'<img src="app/static/{ds_id}/{plot}" style="width:100%">', unsafe_allow_html=True)
+        image = Image.open(f'dashboard_analysis/dashboard/static/{ds_id}/{plot}')
+        # st.image(image, caption='Sunrise by the mountains')
 
-    image = Image.open(f'dashboard_analysis/dashboard/static/{ds_id}/{plots_to_display[0][0]}')
-    st.image(image, caption='Sunrise by the mountains')
-
-    im = cv2.imread(f'dashboard_analysis/dashboard/static/{ds_id}/{plots_to_display[0][0]}')
-    # im_resize = cv2.resize(im, (500, 500))
-    is_success, im_buf_arr = cv2.imencode(".jpg", im)
-    byte_im = im_buf_arr.tobytes()
-    st.image(byte_im, caption=['Original Image'])
+    # im = cv2.imread(f'dashboard_analysis/dashboard/static/{ds_id}/{plots_to_display[0][0]}')
+    # # im_resize = cv2.resize(im, (500, 500))
+    # is_success, im_buf_arr = cv2.imencode(".jpg", im)
+    # byte_im = im_buf_arr.tobytes()
+    # st.image(byte_im, caption=['Original Image'])
 
 
 # # Base file path
