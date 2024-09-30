@@ -28,7 +28,7 @@ with tabs[0]:
         st.write('**'+cap+'**')
         st.markdown(f'<img src="app/static/{ds_id}/{plot}" style="width:100%">', unsafe_allow_html=True)
 
-    image = Image.open(f'static/{ds_id}/{plots_to_display[0][0]}')
+    image = Image.open(f'dashboard_anaylysis/dashboard/static/{ds_id}/{plots_to_display[0][0]}')
     st.image(image, caption='Sunrise by the mountains')
 
     im = cv2.imread(f'dashboard_anaylysis/dashboard/static/{ds_id}/{plots_to_display[0][0]}')
