@@ -1,6 +1,7 @@
 
 import streamlit as st
 import cv2
+from PIL import Image
 # import scanpy as sc
 # import matplotlib.pyplot as plt
 
@@ -27,8 +28,10 @@ with tabs[0]:
         st.write('**'+cap+'**')
         st.markdown(f'<img src="app/static/{ds_id}/{plot}" style="width:100%">', unsafe_allow_html=True)
 
+    image = Image.open(f'static/{ds_id}/{plots_to_display[0][0]}')
+    st.image(image, caption='Sunrise by the mountains')
+
     im = cv2.imread(f'static/{ds_id}/{plots_to_display[0][0]}')
-    st.write(im)
     # im_resize = cv2.resize(im, (500, 500))
     is_success, im_buf_arr = cv2.imencode(".jpg", im)
     byte_im = im_buf_arr.tobytes()
