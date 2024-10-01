@@ -36,7 +36,7 @@ with tabs[1]:
                         (f'umap_celltypes_{ds_id}.png', 'UMAP of manual labelling results')]
     for plot, cap in plots_to_display:
         st.write('**'+cap+'**')
-        image = Image.open(f'/workspaces/sample_workflow/process_datasets/figures/{plot}')
+        image = Image.open(f'process_datasets/figures/{plot}')
         st.image(image)
 
 with tabs[2]:
