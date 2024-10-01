@@ -20,7 +20,7 @@ with tabs[0]:
                         (f'umap_sample_{ds_id}.png', 'UMAP according to sample')]
     for plot, cap in plots_to_display:
         st.write('**'+cap+'**')
-        image = Image.open(f'/workspaces/sample_workflow/process_datasets/figures/{plot}')
+        image = Image.open(f'process_datasets/figures/{plot}')
         st.image(image)
 
 with tabs[1]:
