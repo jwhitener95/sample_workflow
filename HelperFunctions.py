@@ -7,10 +7,13 @@ import scipy
 import scrublet as scr
 import numpy as np
 
-def qc_and_filter(adata, doublet_threshold=0.3, gene_threshold=200, cell_threshold=10):
+def qc_and_filter(adata, save_as, ds_id, doublet_threshold=0.3, gene_threshold=200, cell_threshold=10):
     """
     Thresholds genes, cells, and doublets. Calculates QC metrics.
     """
+
+    # Set directory to save figures
+    sc._settings.ScanpyConfig(figdir=save_as)
 
     # General filters
     sc.pp.filter_cells(adata, min_genes=gene_threshold)
@@ -44,10 +47,10 @@ def qc_and_filter(adata, doublet_threshold=0.3, gene_threshold=200, cell_thresho
     print(f'Percent doublets: {num_doublets/float(total_cells)}')
 
     # Plot
-    sc.pl.violin(adata, ['nFeature_RNA', 'nCount_RNA', 'percent.mt'], jitter=0.4, multi_panel=True, show=False)
+    sc.pl.violin(adata, ['nFeature_RNA', 'nCount_RNA', 'percent.mt'], jitter=0.4, multi_panel=True, show=False, save=f'_QC_{ds_id}.png')
 
     # Consider QC metrics jointly
-    sc.pl.scatter(adata, "nCount_RNA", "nFeature_RNA", color="percent.mt")
+    sc.pl.scatter(adata, "nCount_RNA", "nFeature_RNA", color="percent.mt", show=False, save=f'_jointQC_{ds_id}.png')
 
     # Normalizing to median total counts
     sc.pp.normalize_total(adata)
@@ -60,7 +63,7 @@ def qc_and_filter(adata, doublet_threshold=0.3, gene_threshold=200, cell_thresho
 
     # PCA
     sc.tl.pca(adata)
-    sc.pl.pca_variance_ratio(adata, n_pcs=50, log=True)
+    sc.pl.pca_variance_ratio(adata, n_pcs=50, log=True, show=False, save=f'_{ds_id}.png')
 
     # Nearest neighbors and UMAP
     sc.pp.neighbors(adata)
@@ -68,16 +71,19 @@ def qc_and_filter(adata, doublet_threshold=0.3, gene_threshold=200, cell_thresho
     sc.pl.umap(
         adata,
         color="sample",
-        # Setting a smaller point size to get prevent overlap
         size=2,
+        show=False, save=f'_sample_{ds_id}.png'
     )
 
     return(adata)
 
-def label_cells(adata):
+def label_cells(adata, save_as, ds_id):
     """
     Label cells manually in lieu of available atlas
     """
+
+    # Set directory to save figures
+    sc._settings.ScanpyConfig(figdir=save_as)
 
     # Marker genes from scanpy documentation
     marker_genes = {
@@ -113,6 +119,17 @@ def label_cells(adata):
         "pDC": ["GZMB", "IL3RA", "COBLL1", "TCF4"],
     }
 
+    # Remove marker genes not present in the data
+    vals = [item for sublist in list(marker_genes.values()) for item in sublist]
+    todrop = [i for i in vals if not i in adata.var_names]
+    keys, vals, add_vals = list(marker_genes.keys()), list(marker_genes.values()), []
+    for geneset in vals:
+        for todropgene in todrop:
+            if todropgene in geneset:
+                geneset.remove(todropgene)
+        add_vals += [geneset]
+    marker_genes = dict(zip(keys, add_vals))
+
     # Get leiden clusters
     sc.tl.leiden(adata)
     for res in [0.02, 0.5, 2.0]:
@@ -122,8 +139,23 @@ def label_cells(adata):
     sc.pl.umap(
         adata,
         color=["leiden_res_0.02", "leiden_res_0.50", "leiden_res_2.00"],
-        legend_loc="on data",
+        legend_loc="on data", 
+        show=True, save=f'_leiden_{ds_id}.png'
     )
-    # sc.pl.dotplot(adata, marker_genes, groupby="leiden_res_0.02", standard_scale="var")
 
-    return adata
+    return adata, marker_genes
+
+def plot_clusters(adata, marker_genes, save_as, ds_id, level):
+    """
+    Plot the leiden clusters to help with manual labelling
+    """
+
+    # Set directory to save figures
+    sc._settings.ScanpyConfig(figdir=save_as)
+
+    # Plot leiden clusters against the expression of the marker genes
+    sc.pl.dotplot(adata, marker_genes, groupby=level, standard_scale="var", title=level, dendrogram=True, show=True, save=f'{level}_{ds_id}.png')
+
+    # Obtain cluster-specific differentially expressed genes
+    sc.tl.rank_genes_groups(adata, groupby=level, method="wilcoxon")
+    sc.pl.rank_genes_groups_dotplot(adata, groupby=level, standard_scale="var", n_genes=5, show=True, save=f'{level}_ranked_{ds_id}.png')
