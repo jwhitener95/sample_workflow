@@ -5,6 +5,7 @@ from PIL import Image
 # Dataset id
 ds_ids = ['Miller2023']
 ds_id = st.sidebar.selectbox('Select dataset to view', ds_ids)
+st.sidebar.caption('*Selected dataset is used for the "Processing" and "Labeling" tabs only')
 
 tabs = st.tabs(['Processing', 'Labelling', 'Integrating'])
 
