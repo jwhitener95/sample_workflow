@@ -2,30 +2,53 @@
 import streamlit as st
 from PIL import Image
 
-tabs = st.tabs(['Processing'])
+# Dataset id
+ds_ids = ['Miller2023']
+ds_id = st.sidebar.selectbox('Select dataset to view', ds_ids)
+
+tabs = st.tabs(['Processing', 'Labelling', 'Integrating'])
 
 with tabs[0]:
-    # Dataset id
-    ds_ids = ['Miller2023']
-    cols = st.columns(4)
-    with cols[0]:
-        ds_id = st.sidebar.selectbox('Select dataset to view', ds_ids)
-
     # Header
     st.subheader(f'Processing output: {ds_id}')
     st.write('---')
 
     # Display processing plots
-    plots_to_display = [('mito_plot1.png', 'Computed QC metrics'),
-                        ('mito_plot2.png', 'Consider QC metrics jointly'),
-                        ('variance_ratio.png', 'Contribution of single PCs to the total variance in the data'),
-                        ('umap_sample.png', 'UMAP according to sample'),
-                        ('leiden_plots.png', 'Leiden clusters at different resolutions')]
+    plots_to_display = [(f'violin_QC_{ds_id}.png', 'Computed QC metrics'),
+                        (f'scatter_jointQC_{ds_id}.png', 'Consider QC metrics jointly'),
+                        (f'pca_variance_ratio_{ds_id}.png', 'Contribution of single PCs to the total variance in the data'),
+                        (f'umap_sample_{ds_id}.png', 'UMAP according to sample')]
     for plot, cap in plots_to_display:
         st.write('**'+cap+'**')
-        # st.markdown(f'<img src="app/static/{ds_id}/{plot}" style="width:100%">', unsafe_allow_html=True)
-        image = Image.open(f'dashboard_analysis/dashboard/static/{ds_id}/{plot}')
+        image = Image.open(f'/workspaces/sample_workflow/process_datasets/figures/{plot}')
         st.image(image)
+
+with tabs[1]:
+    # Header
+    st.subheader(f'Labelling output: {ds_id}')
+    st.write('---')
+
+    # Display processing plots
+    res = 'leiden_res_0.50'
+    plots_to_display = [(f'umap_leiden_{ds_id}.png', 'Leiden clusters at different resolutions'),
+                        (f'dotplot_{res}_{ds_id}.png', 'Leiden clusters plotted with marker genes'),
+                        (f'dotplot_{res}_ranked_{ds_id}.png', 'Leiden clusters plotted with top differentially expressed genes'),
+                        (f'umap_celltypes_{ds_id}.png', 'UMAP of manual labelling results')]
+    for plot, cap in plots_to_display:
+        st.write('**'+cap+'**')
+        image = Image.open(f'/workspaces/sample_workflow/process_datasets/figures/{plot}')
+        st.image(image)
+
+with tabs[2]:
+    # Header
+    st.subheader(f'Integration results: {ds_ids}')
+    st.write('---')
+
+
+
+
+
+
 
     # im = cv2.imread(f'dashboard_analysis/dashboard/static/{ds_id}/{plots_to_display[0][0]}')
     # # im_resize = cv2.resize(im, (500, 500))
