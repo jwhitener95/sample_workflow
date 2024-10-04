@@ -6,9 +6,9 @@
 
 ### The following datasets will be used to demonstrate the workflow
 
-Miller YE, Ghosh M, Merrick DT, Kubala B et al. Phase Ib trial of inhaled iloprost for the prevention of lung cancer with predictive and response biomarker assessment. Front Oncol 2023;13:1204726. PMID: [37711198](https://pubmed.ncbi.nlm.nih.gov/37711198/)
+De Zuani, M., Xue, H., Park, J.S. et al. Single-cell and spatial transcriptomics analysis of non-small cell lung cancer. Nat Commun 15, 4388 (2024). [https://doi.org/10.1038/s41467-024-48700-8](https://doi.org/10.1038/s41467-024-48700-8)
 
-Wang D, Li S, Yang Z, Yu C et al. Single-cell transcriptome analysis deciphers the CD74-mediated immune evasion and tumour growth in lung squamous cell carcinoma with chronic obstructive pulmonary disease. Clin Transl Med 2024 Aug;14(8):e1786. PMID: [39113235](https://pubmed.ncbi.nlm.nih.gov/39113235/)
+Miller YE, Ghosh M, Merrick DT, Kubala B et al. Phase Ib trial of inhaled iloprost for the prevention of lung cancer with predictive and response biomarker assessment. Front Oncol 2023;13:1204726. PMID: [37711198](https://pubmed.ncbi.nlm.nih.gov/37711198/)
 
 ---
 
