@@ -45,65 +45,13 @@ with tabs[2]:
     st.subheader(f'Integration results: {ds_ids}')
     st.write('---')
 
-
-
-
-
-
-
-    # im = cv2.imread(f'dashboard_analysis/dashboard/static/{ds_id}/{plots_to_display[0][0]}')
-    # # im_resize = cv2.resize(im, (500, 500))
-    # is_success, im_buf_arr = cv2.imencode(".jpg", im)
-    # byte_im = im_buf_arr.tobytes()
-    # st.image(byte_im, caption=['Original Image'])
-
-
-# # Base file path
-# base = f'D:/GitHub/Data/NSCLC/{ds_id}/'
-
-# # Path to AnnData
-# adata_path = f'{base}{ds_id}_anndata_processed.h5ad'
-
-# @st.cache_data
-# def load_data():
-#     adata = sc.read_h5ad(adata_path)
-#     return adata
-# adata = load_data()
-
-# st.write(adata)
-
-# fig, ax = plt.subplots()
-# sc.tl.umap(adata)
-# sc.pl.umap(
-#     adata,
-#     color="sample",
-#     size=2,
-# )
-# cols = st.columns(3)
-# with cols[0]:
-#     fig, ax = plt.subplots()
-#     sc.pl.umap(
-#         adata,
-#         color="leiden_res_0.02",
-#         legend_loc="on data",
-#         ax=ax
-#     )
-#     st.pyplot(fig)
-# with cols[1]:
-#     fig, ax = plt.subplots()
-#     sc.pl.umap(
-#         adata,
-#         color="leiden_res_0.50",
-#         legend_loc="on data",
-#         ax=ax
-#     )
-#     st.pyplot(fig)
-# with cols[2]:
-#     fig, ax = plt.subplots()
-#     sc.pl.umap(
-#         adata,
-#         color="leiden_res_2.00",
-#         legend_loc="on data",
-#         ax=ax
-#     )
-#     st.pyplot(fig)
+    # Display processing plots
+    res = 'leiden_res_0.50'
+    plots_to_display = [(f'umap_integrated.png', 'UMAP of integration results')]
+    genes = ['CD8A']
+    for gene in genes:
+        plots_to_display += [(f'umap_integrated_{gene}.png', f'Single-cell expression of {gene}')]
+    for plot, cap in plots_to_display:
+        st.write('**'+cap+'**')
+        image = Image.open(f'integrate_datasets/figures/{plot}')
+        st.image(image)
