@@ -1,6 +1,8 @@
 
 import streamlit as st
 
+st.set_page_config(layout="wide")
+
 # Header
 st.subheader(f'Sample scRNA-seq workflow')
 st.write('---')

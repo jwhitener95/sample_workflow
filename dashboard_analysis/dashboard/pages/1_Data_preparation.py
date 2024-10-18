@@ -3,6 +3,8 @@ import streamlit as st
 from PIL import Image
 import os
 
+st.set_page_config(layout="wide")
+
 # Dataset id
 ds_ids = ['DeZuani2024', 'Miller2023']
 ds_id = st.sidebar.selectbox('Select dataset to view', ds_ids)
@@ -46,7 +48,7 @@ with tabs[2]:
     st.subheader(f'Integration results: {ds_ids}')
     st.write('---')
 
-    cols = st.columns(2)
+    cols = st.columns(4)
     plot_names = [i for i in os.listdir('integrate_datasets/figures/') if len(i.split('_')) > 2]
     celltypes = [i.split('_')[2] for i in plot_names]
     with cols[0]:
@@ -58,14 +60,14 @@ with tabs[2]:
     # Display processing plots
     plots_to_display = [(f'umap_integrated.png', 'UMAP of integration results')]
     plots_to_display += [(f'umap_integrated_{cellS}_{geneS}.png', f'Single-cell expression of {geneS}')]
-    # col = st.columns(2)
-    # with col[0]:
-    plot, cap = plots_to_display[0]
-    st.write('**'+cap+'**')
-    image = Image.open(f'integrate_datasets/figures/{plot}')
-    st.image(image)
-    # with col[1]:
-    plot, cap = plots_to_display[1]
-    st.write('**'+cap+'**')
-    image = Image.open(f'integrate_datasets/figures/{plot}')
-    st.image(image)
+    col = st.columns(2)
+    with col[0]:
+        plot, cap = plots_to_display[0]
+        st.write('**'+cap+'**')
+        image = Image.open(f'integrate_datasets/figures/{plot}')
+        st.image(image)
+    with col[1]:
+        plot, cap = plots_to_display[1]
+        st.write('**'+cap+'**')
+        image = Image.open(f'integrate_datasets/figures/{plot}')
+        st.image(image)
