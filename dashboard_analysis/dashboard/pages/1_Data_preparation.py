@@ -55,7 +55,7 @@ with tabs[2]:
         cellS = st.selectbox('Choose cell type to narrow down marker selection', sorted(list(set(celltypes))))
     with cols[1]:
         genes = [i.split('_')[3].split('.')[0] for i in plot_names if i.split('_')[2] == cellS]
-        geneS = st.selectbox('Choose gene to view expression', genes)
+        geneS = st.selectbox('Choose gene to view expression', sorted(genes))
 
     # Display processing plots
     plots_to_display = [(f'umap_integrated.png', 'UMAP of integration results')]
