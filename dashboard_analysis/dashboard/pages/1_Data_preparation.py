@@ -1,6 +1,7 @@
 
 import streamlit as st
 from PIL import Image
+import os
 
 # Dataset id
 ds_ids = ['DeZuani2024', 'Miller2023']
@@ -45,13 +46,24 @@ with tabs[2]:
     st.subheader(f'Integration results: {ds_ids}')
     st.write('---')
 
+    plot_names = [i for i in os.listdir('integrate_datasets/figures/') if len(i.split('_')) > 2]
+    celltypes = [i.split('_')[2] for i in plot_names]
+    cellS = st.selectbox('Choose cell type to narrow down marker selection', sorted(list(set(celltypes))))
+    genes = [i.split('_')[3] for i in plot_names if i.split('_')[2] == cellS]
+    geneS = st.selectbox('Choose gene to view expression', genes)
+
     # Display processing plots
     res = 'leiden_res_0.50'
     plots_to_display = [(f'umap_integrated.png', 'UMAP of integration results')]
-    genes = ['CD8A']
-    for gene in genes:
-        plots_to_display += [(f'umap_integrated_{gene}.png', f'Single-cell expression of {gene}')]
-    for plot, cap in plots_to_display:
+    plots_to_display += [(f'umap_integrated_{cellS}_{geneS}.png', f'Single-cell expression of {geneS}')]
+    col = st.columns(2)
+    with col[0]:
+        plot, cap = plots_to_display[0]
+        st.write('**'+cap+'**')
+        image = Image.open(f'integrate_datasets/figures/{plot}')
+        st.image(image)
+    with col[1]:
+        plot, cap = plots_to_display[1]
         st.write('**'+cap+'**')
         image = Image.open(f'integrate_datasets/figures/{plot}')
         st.image(image)
