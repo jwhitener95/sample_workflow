@@ -53,7 +53,6 @@ with tabs[2]:
     geneS = st.selectbox('Choose gene to view expression', genes)
 
     # Display processing plots
-    res = 'leiden_res_0.50'
     plots_to_display = [(f'umap_integrated.png', 'UMAP of integration results')]
     plots_to_display += [(f'umap_integrated_{cellS}_{geneS}.png', f'Single-cell expression of {geneS}')]
     col = st.columns(2)
