@@ -27,7 +27,9 @@ with tabs[0]:
                         (f'pca_variance_ratio_{ds_id}.png', 'Contribution of single PCs to the total variance in the data', 'This gives us a sense of \
                          how many PCs to use when clustering.'),
                         (f'umap_sample_{ds_id}.png', 'UMAP according to sample', 'UMAP created by embedding the neighborhood graph of cells \
-                         into two dimensions for the purpose of visualization.')]
+                         into two dimensions for the purpose of visualization. This accounts for the PCA representation of the data matrix. \
+                         The samples, which were taken as batches, should theoretically overlap. \
+                         The lack of overlap can be attributed to batch effects in the clustering algorithm.')]
     for plot, cap, note in plots_to_display:
         st.write('**'+cap+'**')
         st.write(note)
