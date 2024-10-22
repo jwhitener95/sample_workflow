@@ -32,6 +32,7 @@ with tabs[0]:
                          the total counts per cell, the percentage of counts in mitochondrial genes')]
     for plot, cap, note in plots_to_display:
         st.write('**'+cap+'**')
+        st.write(note)
         image = Image.open(f'process_datasets/figures/{plot}')
         st.image(image)
 
