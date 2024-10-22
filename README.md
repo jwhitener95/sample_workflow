@@ -12,6 +12,10 @@ Miller YE, Ghosh M, Merrick DT, Kubala B et al. Phase Ib trial of inhaled ilopro
 
 ---
 
+### The Streamlit dashboard can be viewed [here](https://sampleworkflow-mdgj7vhdjc5vzbj4qpjw43.streamlit.app/).
+
+---
+
 ### collect &rarr; format &rarr; process &rarr; integrate &rarr; analyze and dashboard
 
 ---
