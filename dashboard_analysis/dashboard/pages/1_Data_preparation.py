@@ -20,16 +20,14 @@ with tabs[0]:
     # Display processing plots
     plots_to_display = [(f'violin_QC_{ds_id}.png', 'Computed QC metrics', 'Violin plots are used to display the computed QC metrics -- \
                          the number of genes expressed in the count matrix, \
-                         the total counts per cell, the percentage of counts in mitochondrial genes'),
-                        (f'scatter_jointQC_{ds_id}.png', 'Consider QC metrics jointly', 'Violin plots are used to display the computed QC metrics -- \
-                         the number of genes expressed in the count matrix, \
-                         the total counts per cell, the percentage of counts in mitochondrial genes'),
-                        (f'pca_variance_ratio_{ds_id}.png', 'Contribution of single PCs to the total variance in the data', 'Violin plots are used to display the computed QC metrics -- \
-                         the number of genes expressed in the count matrix, \
-                         the total counts per cell, the percentage of counts in mitochondrial genes'),
-                        (f'umap_sample_{ds_id}.png', 'UMAP according to sample', 'Violin plots are used to display the computed QC metrics -- \
-                         the number of genes expressed in the count matrix, \
-                         the total counts per cell, the percentage of counts in mitochondrial genes')]
+                         the total counts per cell, the percentage of counts in mitochondrial genes.'),
+                        (f'scatter_jointQC_{ds_id}.png', 'Consider QC metrics jointly', 'A scatter plot shows the correlation between the QC \
+                         metrics observed in the violin plots -- the number of genes expressed in the count matrix (y-axis), \
+                         the total counts per cell (x-axis), the percentage of counts in mitochondrial genes (color).'),
+                        (f'pca_variance_ratio_{ds_id}.png', 'Contribution of single PCs to the total variance in the data', 'This gives us a sense of \
+                         how many PCs to use when clustering.'),
+                        (f'umap_sample_{ds_id}.png', 'UMAP according to sample', 'UMAP created by embedding the neighborhood graph of cells \
+                         into two dimensions for the purpose of visualization.')]
     for plot, cap, note in plots_to_display:
         st.write('**'+cap+'**')
         st.write(note)
