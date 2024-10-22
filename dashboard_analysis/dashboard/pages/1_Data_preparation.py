@@ -41,12 +41,23 @@ with tabs[1]:
 
     # Display processing plots
     res = 'leiden_res_0.50'
-    plots_to_display = [(f'umap_leiden_{ds_id}.png', 'Leiden clusters at different resolutions'),
-                        (f'dotplot_{res}_{ds_id}.png', 'Leiden clusters plotted with marker genes'),
-                        (f'dotplot_{res}_ranked_{ds_id}.png', 'Leiden clusters plotted with top differentially expressed genes'),
-                        (f'umap_celltypes_{ds_id}.png', 'UMAP of manual labelling results')]
-    for plot, cap in plots_to_display:
+    plots_to_display = [(f'umap_leiden_{ds_id}.png', 'Leiden clusters at different resolutions', 'By looking at different resolutions, \
+                         one can determine which resolution would be most helpful when assigning cell type labels. For the purpose of this \
+                         exercise, "leiden_res_0.50" was used. Due to the small amount of samples (because of current computational power), \
+                         the granularity and breadth of the resulting cell type labels may be less than satisfactory. However, the workflow \
+                         shows how the analysis could be done given the proper resources. As a note, cloud services such as AWS could be used \
+                         to expand the workflow if needed.'),
+                        (f'dotplot_{res}_{ds_id}.png', 'Leiden clusters plotted with marker genes', 'This and the following plot were used \
+                         to manually label the cells. Notably, only cell types that were fairly clear were marked in order to demonstrate the \
+                         workflow. In this plot, pre-determined marker genes were highlighted to bring out the correlation between the leiden \
+                         clusters and the cell types.'),
+                        (f'dotplot_{res}_ranked_{ds_id}.png', 'Leiden clusters plotted with top differentially expressed genes', 'This is an alternate \
+                         way to gain insight into the cell types. This requires familiarity with the genes that are most differentially expressed.'),
+                        (f'umap_celltypes_{ds_id}.png', 'UMAP of manual labelling results', 'The UMAP helps to visualize the resulting cluster \
+                         annotations in two dimensions.')]
+    for plot, cap, note in plots_to_display:
         st.write('**'+cap+'**')
+        st.write(note)
         image = Image.open(f'process_datasets/figures/{plot}')
         st.image(image)
 
@@ -54,6 +65,11 @@ with tabs[2]:
     # Header
     st.subheader(f'Integration results: {ds_ids}')
     st.write('---')
+    st.write('This highlights the result from the integration of the two datasets. Only three random patients from each dataset were used \
+             due to limited resources. Additionally, only a few cell types were labelled. This was due to the lack of confidence in assigning \
+             cell types when so few cells were present. Interestingly, the marker genes do, for the most part, align with the correlated cell types. \
+             The selection boxes help to distinguish the marker genes that were used. First, one selects the cell type of interest. Then, one selects \
+             from the available markers for that cell type. The result can then be viewed.')
 
     cols = st.columns(4)
     plot_names = [i for i in os.listdir('integrate_datasets/figures/') if len(i.split('_')) > 2]
