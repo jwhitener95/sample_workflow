@@ -18,11 +18,19 @@ with tabs[0]:
     st.write('---')
 
     # Display processing plots
-    plots_to_display = [(f'violin_QC_{ds_id}.png', 'Computed QC metrics'),
-                        (f'scatter_jointQC_{ds_id}.png', 'Consider QC metrics jointly'),
-                        (f'pca_variance_ratio_{ds_id}.png', 'Contribution of single PCs to the total variance in the data'),
-                        (f'umap_sample_{ds_id}.png', 'UMAP according to sample')]
-    for plot, cap in plots_to_display:
+    plots_to_display = [(f'violin_QC_{ds_id}.png', 'Computed QC metrics', 'Violin plots are used to display the computed QC metrics -- \
+                         the number of genes expressed in the count matrix, \
+                         the total counts per cell, the percentage of counts in mitochondrial genes'),
+                        (f'scatter_jointQC_{ds_id}.png', 'Consider QC metrics jointly', 'Violin plots are used to display the computed QC metrics -- \
+                         the number of genes expressed in the count matrix, \
+                         the total counts per cell, the percentage of counts in mitochondrial genes'),
+                        (f'pca_variance_ratio_{ds_id}.png', 'Contribution of single PCs to the total variance in the data', 'Violin plots are used to display the computed QC metrics -- \
+                         the number of genes expressed in the count matrix, \
+                         the total counts per cell, the percentage of counts in mitochondrial genes'),
+                        (f'umap_sample_{ds_id}.png', 'UMAP according to sample', 'Violin plots are used to display the computed QC metrics -- \
+                         the number of genes expressed in the count matrix, \
+                         the total counts per cell, the percentage of counts in mitochondrial genes')]
+    for plot, cap, note in plots_to_display:
         st.write('**'+cap+'**')
         image = Image.open(f'process_datasets/figures/{plot}')
         st.image(image)
