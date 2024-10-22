@@ -39,4 +39,4 @@ After the two datasets were processed and had manually labelled cell types, they
 ![image](https://github.com/user-attachments/assets/eb800500-d90c-4553-8b34-2e2801f29f4f)
 
 ### Analyze and dashboard: 
-To be elaborated
+The Streamlit dashboard can currently be viewed [here](https://sampleworkflow-mdgj7vhdjc5vzbj4qpjw43.streamlit.app/). Analysis using the integrated results is forthcoming.
