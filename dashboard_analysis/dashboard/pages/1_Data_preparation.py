@@ -2,6 +2,8 @@
 import streamlit as st
 from PIL import Image
 import os
+import plotly.express as px
+import pandas as pd
 
 st.set_page_config(layout="wide")
 
@@ -83,16 +85,27 @@ with tabs[2]:
         geneS = st.selectbox('Choose gene to view expression', sorted(genes))
 
     # Display processing plots
-    plots_to_display = [(f'umap_integrated.png', 'UMAP of integration results')]
-    plots_to_display += [(f'umap_integrated_{cellS}_{geneS}.png', f'Single-cell expression of {geneS}')]
-    col = st.columns(2)
-    with col[0]:
-        plot, cap = plots_to_display[0]
-        st.write('**'+cap+'**')
-        image = Image.open(f'integrate_datasets/figures/{plot}')
-        st.image(image)
-    with col[1]:
-        plot, cap = plots_to_display[1]
-        st.write('**'+cap+'**')
-        image = Image.open(f'integrate_datasets/figures/{plot}')
-        st.image(image)
+    # plots_to_display = [(f'umap_integrated.png', 'UMAP of integration results')]
+    # plots_to_display += [(f'umap_integrated_{cellS}_{geneS}.png', f'Single-cell expression of {geneS}')]
+    # col = st.columns(2)
+    # with col[0]:
+    #     plot, cap = plots_to_display[0]
+    #     st.write('**'+cap+'**')
+    #     image = Image.open(f'integrate_datasets/figures/{plot}')
+    #     st.image(image)
+    # with col[1]:
+    #     plot, cap = plots_to_display[1]
+    #     st.write('**'+cap+'**')
+    #     image = Image.open(f'integrate_datasets/figures/{plot}')
+    #     st.image(image)
+    df = pd.read_csv('dashboard_analysis/integration_DeZuani2024_Miller2023.csv')
+    cols = st.columns(2)
+    with cols[0]:
+        st.write('**UMAP of integration results**')
+        fig = px.scatter(df, x='UMAP_x', y='UMAP_y', color='cell_type')
+        st.plotly_chart(fig, use_container_width=True)
+
+    with cols[1]:
+        st.write(f'**Single-cell expression of {geneS}**')
+        fig = px.scatter(df, x='UMAP_x', y='UMAP_y', color='geneS')
+        st.plotly_chart(fig, use_container_width=True)
