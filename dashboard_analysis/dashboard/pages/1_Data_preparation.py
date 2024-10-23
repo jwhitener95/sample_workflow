@@ -78,11 +78,17 @@ with tabs[2]:
     cols = st.columns(4)
     plot_names = [i for i in os.listdir('integrate_datasets/figures/') if len(i.split('_')) > 2]
     celltypes = [i.split('_')[2] for i in plot_names]
+    df = pd.read_csv('dashboard_analysis/integration_DeZuani2024_Miller2023.csv')
     with cols[0]:
         cellS = st.selectbox('Choose cell type to narrow down marker selection', sorted(list(set(celltypes))))
     with cols[1]:
         genes = [i.split('_')[3].split('.')[0] for i in plot_names if i.split('_')[2] == cellS]
         geneS = st.selectbox('Choose gene to view expression', sorted(genes))
+    with cols[2]:
+        celltypeS = st.multiselect('Choose which cell types to include in the plots', ['All']+sorted(list(df['cell_type'].unique())), 'All')
+        if 'All' in celltypeS or celltypeS == []:
+            celltypeS = list(df['cell_type'].unique())
+        df = df[df['cell_type'].isin(celltypeS)]
 
     # Display processing plots
     # plots_to_display = [(f'umap_integrated.png', 'UMAP of integration results')]
@@ -98,14 +104,19 @@ with tabs[2]:
     #     st.write('**'+cap+'**')
     #     image = Image.open(f'integrate_datasets/figures/{plot}')
     #     st.image(image)
-    df = pd.read_csv('dashboard_analysis/integration_DeZuani2024_Miller2023.csv')
     cols = st.columns(2)
     with cols[0]:
         st.write('**UMAP of integration results**')
         fig = px.scatter(df, x='UMAP_x', y='UMAP_y', color='cell_type')
+        fig.update_xaxes(visible=False)
+        fig.update_yaxes(visible=False)
+        fig.update_traces(marker=dict(size=3))
         st.plotly_chart(fig, use_container_width=True)
 
     with cols[1]:
         st.write(f'**Single-cell expression of {geneS}**')
-        fig = px.scatter(df, x='UMAP_x', y='UMAP_y', color='geneS')
+        fig = px.scatter(df, x='UMAP_x', y='UMAP_y', color=geneS)
+        fig.update_xaxes(visible=False)
+        fig.update_yaxes(visible=False)
+        fig.update_traces(marker=dict(size=3))
         st.plotly_chart(fig, use_container_width=True)
